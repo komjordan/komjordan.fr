@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="fr">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="apple-touch-icon" sizes="180x180" href="https://komjordan.fr/assets/fav.ico">
+      <link rel="icon" type="image/png" sizes="32x32" href="https://komjordan.fr/assets/fav.ico">
+      <link rel="icon" type="image/png" sizes="16x16" href="https://komjordan.fr/assets/fav.ico">
+      <meta name="description" content="Audit de Sécurité CEH - Étude de Cas (Institut F2I) | Axel KAMGAING KOM">
+      <meta name="author" content="Axel KAMGAING KOM">
+      <link rel="canonical" href="https://komjordan.fr/audit.html">
+      <meta property="og:type" content="website">
+      <meta property="og:url" content="https://komjordan.fr/audit.html">
+      <meta property="og:title" content="Audit de Sécurité CEH - Étude de Cas (Institut F2I) | Axel KAMGAING KOM">
+      <meta property="og:description" content="Étude de cas CEH réalisée sur l'infrastructure de l'Institut F2I. Audit de sécurité complet avec analyse des failles, outils utilisés et recommandations professionnelles. Projet réalisé avec autorisation dans un cadre pédagogique.">
+      <meta property="og:image" content="https://komjordan.fr/assets/img/audit.jpg">
+      <meta name="twitter:card" content="summary_large_image">
+      <meta name="twitter:url" content="https://komjordan.fr/audit.html">
+      <meta name="twitter:title" content="Audit de Sécurité CEH - Étude de Cas (Institut F2I) | Axel KAMGAING KOM">
+      <meta name="twitter:description" content="Étude de cas CEH réalisée sur l'infrastructure de l'Institut F2I. Audit de sécurité complet avec analyse des failles, outils utilisés et recommandations professionnelles. Projet réalisé avec autorisation dans un cadre pédagogique.">
+      <meta name="twitter:image" content="https://komjordan.fr/assets/img/audit.jpg">
+	  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-JBT1BV2THZ');
+</script>
+      <title>Audit de Sécurité CEH - Étude de Cas (Institut F2I) | Axel KAMGAING KOM</title>
+      <link rel="stylesheet" href="https://komjordan.fr/main.css">
+      <script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
+   </head>
+   <body class="dark">
+      <div class="page">
+      <header>
+         <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+            <a href="../index.html" class="logo">&gt; root@komjordan:~# ls<span class="cursor"></span></a>
+            <nav class="menu" id="mainMenu">
+               <a href="https://komjordan.fr/posts/experiences.html">Experiences</a>
+               <a href="https://komjordan.fr/posts/post.html">Projets</a>
+               <div class="theme-switch" id="toggleTheme">
+                  <span class="switch-icon" id="themeIcon">
+                  &#127761;
+                  </span>
+                  <span class="switch-label" id="themeLabel">Sombre</span>
+               </div>
+               <span class="menu-toggle" id="menuBtn">☰</span>
+            </nav>
+         </div>
+      </header>
+      <div class="mobile-menu" id="mobileMenu">
+         <a href="https://komjordan.fr/posts/experiences.html">Experiences</a>
+         <a href="https://komjordan.fr/posts/post.html">Projets</a>
+      </div>
+      <div id="particles-wrapper">
+         <div id="tsparticles">
+            <canvas data-generated="false" style="width: 100%; height: 100%; pointer-events: none;" aria-hidden="true" width="1891" height="885"></canvas>
+         </div>
+      </div>
+      <div class="container">
+         <div class="toc-toggle" onclick="toggleToc()">☰ Sommaire</div>
+         <div id="toc" class="toc">
+            <strong>Sommaire</strong>
+            <a href="#introduction">🔹 Introduction</a>
+            <a href="#footprinting">🔹 Footprinting </a>
+            <a href="#scanning">🔹 Cartographie du réseau</a>
+            <a href="#enumération">🔹 Énumération</a>
+            <a href="#vulnérabilités">🔹 Vulnérabilités</a>
+            <a href="#recommandations">🔹 Recommandations </a>
+            <a href="#conclusion">🔹 Conclusion</a>
+            <a href="#credits">🔹 Crédits</a>
+         </div>
+         <main class="post">
+            <div class="post-info">
+               <p>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock">
+                     <circle cx="12" cy="12" r="10"></circle>
+                     <polyline points="12 6 12 12 16 14"></polyline>
+                  </svg>
+                  9 minutes
+               </p>
+            </div>
+            <articles>
+            <h1 class="post-title">
+               <a href="https://komjordan.fr/posts/audit.html">Audit de Sécurité CEH - Étude de Cas (Institut F2I)</a>
+            </h1>
+            <div class="post-content">
+               <blockquote>
+                  <p><strong>Note:</strong>Ce rapport a été réalisé dans un cadre pédagogique contrôlé et avec l'autorisation explicite de l'organisation concernée. L'ensemble des actions décrites ici respectent les principes éthiques de la cybersécurité et suivent les bonnes pratiques du Certified Ethical Hacker (CEH).
+                     <br>Ce document n'a pas pour but de nuire, mais de sensibiliser aux risques et de démontrer les méthodes professionnelles permettant de sécuriser une infrastructure informatique
+                  </p>
+               </blockquote>
+               <blockquote>
+                  <p><strong>Note:</strong> Si vous avez du mal à visualiser les images, téléchargez ou ouvrez dans un nouvel onglet pour avoir une meilleure resolution</p>
+               </blockquote>
+               <main>
+                  <h2 id="introduction">Introduction</h2>
+                  <p>
+                     Ce document présente les résultats d'un audit de sécurité de type CEH (Certified Ethical Hacker), mené sur une infrastructure d'entreprise dans le cadre d'un exercice de pentesting. L'objectif était de simuler une attaque réelle afin d'évaluer les vulnérabilités, la posture de sécurité et les mesures de protection en place. 
+                     Ce rapport suit la méthodologie classique d'un test d'intrusion en cinq phases : 
+                  <ol>
+                     <li>Reconnaissance</li>
+                     <li>Scan réseau</li>
+                     <li>énumération</li>
+                     <li>Analyse de vulnérabilités</li>
+                     <li>Recommandations</li>
+                  </ol>
+                  </p>
+                  <section>
+                     <h2 id="footprinting">1. Footprinting - Reconnaissance initiale</h2>
+                     <p><strong><u>Objectif</u></strong> : Recueillir des informations publiques sur la cible via google et le whois</p>
+                     <p>
+                        Cette première étape consiste à recueillir passivement des informations sur la cible sans interagir directement avec ses systèmes. Elle permet de dresser une cartographie préliminaire de l'environnement visé.
+                     </p>
+                     <h3>Recherche Google avancée (Google Dorking)</h3>
+                     <p>
+                        À l'aide de requêtes spécifiques, nous avons cherché des informations sensibles indexées par les moteurs de recherche. Cela inclut des erreurs serveur, des fichiers exposés, ou encore des adresses email :
+                     </p>
+                     <ul>
+                        <li><code>site:institut-f2i.fr</code> - Toutes les pages accessibles</li>
+                        <p><img src="https://komjordan.fr/assets/img/footprinting.png" alt="Google Dorking"></p>
+                        <li><code>email:@institut-f2i.fr</code> - Recherche d'emails en clair</li>
+                        <p><img src="https://komjordan.fr/assets/img/footprinting1.png" alt="Google Dorking"></p>
+                     </ul>
+                     <p>D'autres Dork peuvent être utilisé pour identifier des pages d'erreur où des informations sensibles sont accidentellement divulguées, recherche des pages qui pourraient indiquer les versions de logiciels, comme les versions d'Apache, de Nginx ou d'autres services, Recherche des fichiers robots.txt ou d'autres fichiers qui donnent des informations techniques sur le serveur.</p>
+                     <ul>
+                        <li><code>site:institut-f2i.fr "Error"</code> - Pages d'erreur exposant des infos</li>
+                        <li><code>filetype:txt "robots.txt"</code> - Fichiers d'indexation visibles</li>
+                        <li><code>site:institut-f2i.fr "Nginx</code></li>
+                        <li><code>site:institut-f2i.fr "Apache"</code></li>
+                     </ul>
+                     <h3>Résolution DNS</h3>
+                     <p>
+                        Grâce à la commande <code>nslookup</code> et <code>dig</code>, nous avons obtenu les enregistrements DNS de base du domaine ciblé, ce qui nous permet d'identifier les serveurs actifs.
+                     </p>
+                     <p><img src="https://komjordan.fr/assets/img/nslookup.png" alt="Résultat nslookup"></p>
+                     <h3>Enumeration des sous-domaines</h3>
+                     <p>
+                        Avec <code>Sublist3r(util d'énumération de sous-domaines) </code>, nous avons découvert des sous-domaines potentiellement oubliés, souvent utilisés pour des services internes ou en développement.
+                     </p>
+                     <p><img src="https://komjordan.fr/assets/img/sublist3r.png" alt="Résultat sublist3r"></p>
+                     <h3>Analyse WHOIS</h3>
+                     <p>
+                        Le WHOIS a fourni des détails sur le propriétaire du domaine, les serveurs DNS, et les dates importantes. Ces informations peuvent être exploitées pour du spear phishing ou de l'ingénierie sociale.
+                     </p>
+                     <p><img src="https://komjordan.fr/assets/img/whois.png" alt="Résultat WHOIS"></p>
+                     <p><img src="https://komjordan.fr/assets/img/whois1.png" alt="Résultat WHOIS"></p>
+                  </section>
+                  <section>
+                     <h2 id="scanning">2. Scanning Network - Cartographie du réseau</h2>
+                     <p><strong><u>Objectif</u></strong>: Identifier les services et les ports ouverts sur tout le réseau.</p>
+                     <p>
+                        Dans cette phase, grâce a l'outils <code>Nmap</code> nous avons interagi avec le réseau pour identifier les hôtes actifs, les ports ouverts et les services exposés. Un scan large du sous-réseau cible a été réalisé avec Nmap :
+                     </p>
+                     <p><code>nmap -sV -O 192.168.10.0/24</code></p>
+                     <ul>
+                        <li><code>-sV</code> : détection des versions de service</li>
+                        <li><code>-O</code> : tentative d'identification du système d'exploitation</li>
+                     </ul>
+                     <p>
+                        Ce scan a révélé deux machines principales : une Debian exposant des services classiques
+                     </p>
+                     <p><img src="https://komjordan.fr/assets/img/nmap_scan.png" alt="Scan Nmap"></p>
+                     <p>et une machine Windows avec des services SMB accessibles.</p>
+                     <p><img src="https://komjordan.fr/assets/img/nmap_report.png" alt="Resultat Nmap"></p>
+                  </section>
+                  <section>
+                     <h2 id="enumération">3. Énumération - Extraction d'informations internes</h2>
+                     <p><strong><u>Objectif</u></strong>: Extraire des informations détaillées sur les services et les ressources du réseau.</p>
+                     <p>
+                        Cette phase approfondit l'analyse des services ouverts. L'énumération permet d'extraire des utilisateurs, des partages réseau ou des configurations spécifiques à partir des ports découverts précédemment.
+                     </p>
+                     <ul>
+                        <li>Utilisation d'un outil pour établir des connexions aux ports ouverts</li>
+                        <li>Utilisation d'un outil pour énumérer les informations SNMP si le port 161 est ouvert - souvent une mine d'or d'informations système</li>
+                     </ul>
+                     <p> Un scan complet avec la commande <code>nmap -sC -sV -p- 192.168.10.150</code></p>
+                     <ul>
+                        <li><code>-sC</code>Lance les scripts Nmap par défaut (équivalent de --script=default). Cela permet d'avoir des infos plus poussées (comme des tentatives de connexion à des services, fingerprinting, etc.).</li>
+                        <li><code>-sV</code>Active la détection de version sur les services trouvés (ex : Apache 2.4.41, OpenSSH 8.4, etc.).</li>
+                        <li><code>-p-</code>Scanne tous les ports TCP (de 1 à 65535). Par défaut, Nmap ne scanne que les 1000 ports les plus courants, donc ici on va bien plus loin.</li>
+                     </ul>
+                     <p><img src="https://komjordan.fr/assets/img/nmap_fullscan.png" alt="Scan caomplet Nmap"></p>
+                     <li>Tentative de connection en ssh avec l'utilisateur <code>root</code></li>
+                     <p><img src="https://komjordan.fr/assets/img/ssh_login.png" alt="Scan Nmap"></p>
+                     <p><img src="https://komjordan.fr/assets/img/matasploit.png" alt="Scan Nmap"></p>
+                  </section>
+                  <section>
+                     <h2 id="vulnérabilités">4. Analyse de vulnérabilités - Identification des failles exploitables</h2>
+                     <p><strong><u>Objectif</u></strong>: Identifier les vulnérabilités exploitables..</p>
+                     <p>
+                        À ce stade, nous allons utilisé divers outils pour détecter automatiquement les failles connues. Cela permet de prioriser les actions correctives sur les services exposés :
+                     </p>
+                     <h3>Outils utilisés :</h3>
+                     <ul>
+                        <li><strong>Nmap NSE</strong> - scripts d'audit de vulnérabilité en ligne</li>
+                        <p></p>
+                        <img src="https://komjordan.fr/assets/img/nmap_smb.png" alt="Scan smb nmap"></p>
+                        <li><strong>Nikto</strong> - analyse de failles sur serveurs web (XSS, headers manquants, etc.)</li>
+                        <p><img src="https://komjordan.fr/assets/img/nikto.png" alt="Scan Nikto"></p>
+                        <li><strong>Enum4linux</strong> - énumération SMB sous Windows: Nous avons trouver 'l'utilisateur ALEXIANE_AXEL dans le domaine WORKGROUP</li>
+                        <p><img src="https://komjordan.fr/assets/img/enum4linux.png" alt="Scan Enum4linux"></p>
+                        <li><strong>OpenVAS</strong> - scanner d'entreprise pour vulnérabilités connues et CVEs</li>
+                        <p><img src="https://komjordan.fr/assets/img/openvas.png" alt="Scan OpenVAS"></p>
+                     </ul>
+                     <h3>Principales vulnérabilités détectées :</h3>
+                     <ul>
+                        <li><strong>Clickjacking :</strong> absence d'en-tête <code>X-Frame-Options</code></li>
+                        <li><strong>MIME Sniffing :</strong> absence de <code>X-Content-Type-Options</code></li>
+                        <li><strong>Informations sensibles exposées :</strong> headers techniques (OVH, CDN, etc.)</li>
+                     </ul>
+                     <h2 id=recommandations>
+                     Recommandations de sécurité :</h3>
+                     <ul>
+                        <li>Ajouter les en-têtes HTTP sécurisés dans la configuration serveur</li>
+                        <li>Mettre en place un processus de mise à jour rigoureux</li>
+                        <li>Restreindre les ports et services non utilisés</li>
+                        <li>Mettre en œuvre une supervision continue (Zabbix, Wazuh...)</li>
+                        <li>Planifier des tests d'intrusion réguliers</li>
+                     </ul>
+                  </section>
+                  <section>
+                     <h2 id="conclusion">Conclusion</h2>
+                     <p>
+                        Cet audit a mis en évidence des failles techniques et organisationnelles dans l'infrastructure testée. Grâce à l'approche CEH, nous avons pu simuler des attaques réalistes, identifier des vecteurs d'exploitation potentiels et proposer des solutions concrètes pour renforcer la sécurité.
+                     </p>
+                     <p>
+                        Ce travail démontre l'importance d'une veille permanente, d'un durcissement des configurations, et d'une vision proactive de la cybersécurité. Il est recommandé d'intégrer ces bonnes pratiques dans une politique globale de sécurité de l'information.
+                     </p>
+                  </section>
+               </main>
+               <h2 id="credits">Crédits</h2>
+               <p>Ce projet a été réalisé en collaboration avec <a href="https://www.linkedin.com/in/alexiane-a-29b800219/" target="_blank"><u>@Alexiane AZIZ GBADAMASSI</u></a>, dans le cadre d'un travail d'analyse de sécurité encadré par l'Institut F2I.</p>
+               <hr />
+               <div class="post-info">
+                  <p>
+                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10 9 9 9 8 9"></polyline>
+                     </svg>
+                     1 200 Mots
+                  </p>
+                  <p>
+                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                     </svg>
+                     17-01-2025 00:00
+                  </p>
+               </div>
+               <hr />
+               <br>
+               <div class="pagination__buttons">
+                  <a class="pagination-button left" href="https://komjordan.fr/posts/splunk.html" title="Splunk : Installation, Collecte de logs, Rapports & Tableau de Bord">
+                  <span class="icon">←</span>
+                  <span class="label">SIEM Splunk - Installation, Collecte de logs, Rapports & Tableau de Bord</span>
+                  </a>
+                  <a class="pagination-button right" href="https://komjordan.fr/posts/veeam.html" title="Veeam Backup & Replication - Déploiement, Sauvegarde et Restauration">
+                  <span class="label">Veeam Backup & Replication - Déploiement, Sauvegarde et Restauration</span>
+                  <span class="icon">→</span>
+                  </a>
+               </div>
+               <p style="text-align: center; font-weight: bold; color: var(--text-color);">Partager sur :</p>
+               <div class="sharing-buttons">
+                  <a class="resp-sharing-button__link" href="https://facebook.com/sharer/sharer.php?u=https://komjordan.fr/posts/audit.html" target="_blank" rel="noopener" aria-label="" title="Share on facebook">
+                     <div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--small">
+                        <div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                              <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                           </svg>
+                        </div>
+                     </div>
+                  </a>
+                  <a class="resp-sharing-button__link" href="https://twitter.com/intent/tweet/?url=https://komjordan.fr/posts/audit.html" target="_blank" rel="noopener" aria-label="" title="Share on twitter">
+                     <div class="resp-sharing-button resp-sharing-button--twitter resp-sharing-button--small">
+                        <div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                              <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+                           </svg>
+                        </div>
+                     </div>
+                  </a>
+                  <a class="resp-sharing-button__link" href="mailto:?subject=Parse%20NTDLL%20and%20PEB&amp;body=https://komjordan.fr/posts/audit.html" target="_self" rel="noopener" aria-label="" title="Share via email">
+                     <div class="resp-sharing-button resp-sharing-button--email resp-sharing-button--small">
+                        <div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                              <polyline points="22,6 12,13 2,6"></polyline>
+                           </svg>
+                        </div>
+                     </div>
+                  </a>
+                  <a class="resp-sharing-button__link" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fkomjordan.com%2Fposts%2Faudit.html" target="_blank" rel="noopener" aria-label="" title="Share on linkedin">
+                     <div class="resp-sharing-button resp-sharing-button--linkedin resp-sharing-button--small">
+                        <div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                              <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                              <rect x="2" y="9" width="4" height="12"></rect>
+                              <circle cx="4" cy="4" r="2"></circle>
+                           </svg>
+                        </div>
+                     </div>
+                  </a>
+                  <a class="resp-sharing-button__link" href="https://reddit.com/submit/?url=https://komjordan.fr/posts/audit.html" target="_blank" rel="noopener" aria-label="" title="Share on reddit">
+                     <div class="resp-sharing-button resp-sharing-button--reddit resp-sharing-button--small">
+                        <div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                              <path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/>
+                           </svg>
+                        </div>
+                     </div>
+                  </a>
+               </div>
+         </main>
+         </div>
+         <footer>
+            <div class="container">
+               <p>© 2025 Axel</p>
+            </div>
+         </footer>
+         <script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
+      </div>
+      <script src="https://komjordan.fr/main.js"></script>
+      <button id="scrollTopBtn" title="Retour en haut">
+      <span class="arrow-only">↑</span>
+      <span class="text">Retour en haut ↑</span>
+      </button>
+   </body>
+</html>

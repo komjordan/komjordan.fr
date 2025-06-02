@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="fr">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="apple-touch-icon" sizes="180x180" href="https://komjordan.fr/assets/fav.ico">
+      <link rel="icon" type="image/png" sizes="32x32" href="https://komjordan.fr/assets/fav.ico">
+      <link rel="icon" type="image/png" sizes="16x16" href="https://komjordan.fr/assets/fav.ico">
+      <meta name="description" content="SIEM Splunk - Installation, Collecte de logs, Rapports & Tableau de Bord | Axel KAMGAING KOM">
+      <meta name="author" content="Axel KAMGAING KOM">
+      <link rel="canonical" href="https://komjordan.fr/splunk.html">
+      <meta property="og:type" content="website">
+      <meta property="og:url" content="https://komjordan.fr/splunk.html">
+      <meta property="og:title" content="SIEM Splunk - Installation, Collecte de logs, Rapports & Tableau de Bord | Axel KAMGAING KOM">
+      <meta property="og:description" content="Projet Splunk complet : installation sur Debian, collecte de logs depuis Kali Linux et Windows 10, création de rapports automatisés et tableaux de bord personnalisés.">
+      <meta property="og:image" content="https://komjordan.fr/assets/img/splunk.jpg">
+      <meta name="twitter:card" content="summary_large_image">
+      <meta name="twitter:url" content="https://komjordan.fr/splunk.html">
+      <meta name="twitter:title" content="SIEM Splunk - Installation, Collecte de logs, Rapports & Tableau de Bord | Axel KAMGAING KOM">
+      <meta name="twitter:description" content="Projet Splunk complet : installation sur Debian, collecte de logs depuis Kali Linux et Windows 10, création de rapports automatisés et tableaux de bord personnalisés.">
+      <meta name="twitter:image" content="https://komjordan.fr/assets/img/splunk.jpg">
+	  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-JBT1BV2THZ');
+</script>
+      <title>SIEM Splunk - Installation, Collecte de logs, Rapports & Tableau de Bord | Axel KAMGAING KOM</title>
+      <link rel="stylesheet" href="https://komjordan.fr/main.css">
+      <script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
+   </head>
+   <body class="dark">
+      <div class="page">
+      <header>
+         <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+            <a href="https://komjordan.fr" class="logo">&gt; root@komjordan:~# ls<span class="cursor"></span></a>
+            <nav class="menu" id="mainMenu">
+               <a href="https://komjordan.fr/posts/experiences.html">Experiences</a>
+               <a href="https://komjordan.fr/posts/post.html">Projets</a>
+               <div class="theme-switch" id="toggleTheme">
+                  <span class="switch-icon" id="themeIcon">
+                  &#127761;
+                  </span>
+                  <span class="switch-label" id="themeLabel">Sombre</span>
+               </div>
+               <span class="menu-toggle" id="menuBtn">☰</span>
+            </nav>
+         </div>
+      </header>
+      <div class="mobile-menu" id="mobileMenu">
+         <a href="https://komjordan.fr/posts/experiences.html">Experiences</a>
+         <a href="https://komjordan.fr/posts/post.html">Projets</a>
+      </div>
+      <div id="particles-wrapper">
+         <div id="tsparticles">
+            <canvas data-generated="false" style="width: 100%; height: 100%; pointer-events: none;" aria-hidden="true" width="1891" height="885"></canvas>
+         </div>
+      </div>
+      <div class="container">
+         <div class="toc-toggle" onclick="toggleToc()">☰ Sommaire</div>
+         <div id="toc" class="toc">
+            <strong>Sommaire</strong>
+            <a href="#introduction">🔹 Introduction</a>
+            <a href="#fonctionnalités">🔹 Fonctionnalités</a>
+            <a href="#installation">🔹 Installation de Splunk</a>
+            <a href="#forwarder-windows">🔹 Forwarder sur Windows</a>
+            <a href="#forwarder-kali">🔹 Forwarder sur Linux</a>
+            <a href="#attaques">🔹 Simulation de 2 attaques</a>
+            <a href="#rapport-mail">🔹 Rapport par mail</a>
+            <a href="#dashboard">🔹 Tableau de bord</a>
+            <a href="#conclusion">🔹 Conclusion</a>
+            <a href="#references">🔹 References</a>
+         </div>
+         <main class="post">
+            <div class="post-info">
+               <p>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock">
+                     <circle cx="12" cy="12" r="10"></circle>
+                     <polyline points="12 6 12 12 16 14"></polyline>
+                  </svg>
+                  14 minutes
+               </p>
+            </div>
+            <div style="text-align: center;">
+               <h1 class="post-title">
+                  <a href="https://komjordan.fr/posts/spunk.html">SIEM Splunk : Installation, Collecte de logs, Rapports & Tableau de Bord</a>
+               </h1>
+            </div>
+            <div class="post-content">
+               <blockquote>
+                  <p><strong>Note:</strong> Si vous avez du mal à visualiser les images, téléchargez ou ouvrez dans un nouvel onglet pour avoir une meilleure resolution</p>
+               </blockquote>
+               <h2 id="introduction">Introduction</h2>
+               <p><strong>Splunk</strong> est une solution de collecte, d'analyse et de visualisation des données machine. Elle permet de centraliser les journaux systèmes, d'analyser les événements de sécurité, et de construire des tableaux de bord en temps réel.</p>
+               <h2 id="fonctionnalités">Principales fonctionnalités</h2>
+               <ul>
+                  <li>
+                     <p><strong>Collecte et indexation des données</strong>: ingestion de logs, métriques et événements depuis de nombreuses sources (Linux, Windows, NAS, bases de données, API, etc.), avec parsing, normalisation et extraction automatique des champs.</p>
+                  </li>
+                  <li>
+                     <p><strong>Recherche et visualisation des données</strong>: exploitation du langage SPL (Search Processing Language) pour interroger les données, détecter les anomalies, analyser les tendances et créer des tableaux de bord interactifs et personnalisés avec visualisations dynamiques (graphiques, jauges, cartes, etc.).</p>
+                  </li>
+                  <li>
+                     <p><strong>Rapports et alertes automatisées</strong>: génération de rapports personnalisés à la demande ou planifiés, avec export (PDF, CSV) ou envoi par email, et configuration d'alertes conditionnelles déclenchant des actions automatisées (emails, scripts, webhooks, etc.).</p>
+                  </li>
+                  <li>
+                     <p><strong>Automatisation, intégration et extensibilité</strong>: exécution d'actions automatisées, intégration avec des outils tiers (Slack, Jira, ServiceNow) et extension des fonctionnalités via les apps de Splunkbase ou des modules avancés comme le Machine Learning Toolkit.</p>
+                  </li>
+               </ul>
+               <h2 id="installation">Installation de Splunk sur Debian</h2>
+               <ol>
+                  <li>Après avoir créé un compte sur le <a href="https://www.splunk.com/fr_fr/download/splunk-enterprise.html">site officiel de Splunk</a>, téléchargez la version Enterprise correspondant à l'architecture de votre système. .</li>
+                  <li>
+                     Pour une machine Debian/Ubuntu 64 bits, vous pouvez utiliser la commande suivante(lien a mettre a jour) : 
+                     <pre><code>wget -O splunk-9.4.1-e3bdab203ac8-linux-amd64.deb "https://download.splunk.com/products/splunk/releases/9.4.1/linux/splunk-9.4.1-e3bdab203ac8-linux-amd64.deb"</code></pre>
+                  </li>
+                  <li>
+                     Installez le paquet : 
+                     <pre><code>sudo dpkg -i splunk-*.deb</code></pre>
+                  </li>
+                  <li>
+                     Démarrez le service avec acceptation de la licence :
+                     <pre><code>sudo /opt/splunk/bin/splunk start --accept-license</code></pre>
+                     puis créez un utilisateur et définissez son mot de passe
+                  </li>
+                  <li>Accédez à l'interface web sur : <code>http://localhost:8000</code> et connectez vous avec l'utilisateur et le mot de passe crée précedement</li>
+                  <p><img src="https://komjordan.fr/assets/img/login_splunk.png" alt="Page de connexion Splunk" class="left" /></p>
+                  <p> 
+                  <li>Une fois sur la page d'acceuil rendez vous dans parametteres puis transmission et réception, dans Réception de données on ajoute le port par defaut 9997</li>
+                  </p>
+                  <p><img src="https://komjordan.fr/assets/img/home_splunk.png" alt="Ajout du port de réception" class="left" /></p>
+               </ol>
+               <h2 id="forwarder-windows">Installation du Forwarder sur Windows 10</h2>
+               <ol>
+                  <p>Rendez-vous sur page de téléchargement de <a href="https://www.splunk.com/en_us/download/universal-forwarder.html" target="_blank">Universel Splunk Forwarder </a> et téléchargez la version Windows 64-bit.</p>
+                  <li>Double-cliquez sur le fichier .msi téléchargé et suivez l'assistant</li>
+                  <li>Acceptez la licence</li>
+                  <li>Définissez un utilisateur et un mot de passe pour puis l'ip du serveur: 192.168.20.130 (dans notre cas) avec le port 8089 (port de management)</li>
+                  <li>Dans la fenêtre suivante l'IP du serveur avec le port 9997 (port de réception par defaut precedement defini dans le serveur)</li>
+                  <li>
+                     Ouvrez Powershell en super utilisateur et allez dans le dossier d'installaltion de splunk puis verifier la liste des serveurs actifs 
+                     <pre><code>cd "C:\Program Files\SplunkUniversalForwarder\bin"
+.\splunk.exe list forward-server</code></pre>
+                     <p><img src="https://komjordan.fr/assets/img/list_forwarder.png" alt="Configuration du forwarder sur Windows" class="left" /></p>
+               </ol>
+               <h2 id="forwarder-kali">Installation du Forwarder sur Linux (Kali)</h2>
+               <ol>
+                  <p>Rendez-vous sur page de téléchargement de <a href="https://www.splunk.com/en_us/download/universal-forwarder.html" target="_blank">Universel Splunk Forwarder </a> et téléchargez la version a votre architecture système (.deb 64bit dans notre cas).</p>
+                  <lu>Dans le terminal en super utilisateur   </lu>
+               </ol>
+               <pre><code class="terminal">
+# wget -O splunkforwarder.deb "https://download.splunk.com/products/universalforwarder/releases/9.4.1/linux/splunkforwarder-9.4.1-e3bdab203ac8-linux-amd64.deb"
+# sudo dpkg -i splunkforwarder.deb
+# sudo /opt/splunkforwarder/bin/splunk start --accept-license
+# sudo /opt/splunkforwarder/bin/splunk add forward-server 192.168.20.130:9997 -auth username:pass    <span class="comment"> // remplacez user:pass par vos identifiants</span>
+# sudo /opt/splunkforwarder/bin/splunk add monitor /var/log     <span class="comment">//ajout du dossier de logs</span>
+# sudo /opt/splunkforwarder/bin/splunk enable boot-start    <span class="comment"> // autostart au démarrage</span>
+</code></pre>
+               <p><img src="https://komjordan.fr/assets/img/kali_forwarder1.png" alt="Configuration du forwarder sur Kali" class="left" /></p>
+               </ol>
+               <h2 id="rapport">Verification de l'envoi de logs</h2>
+               <p>Depuis l'interface web du serveur Splunk on exécute la recherche <code>index=*</code></p>
+               Nous voyons bien que les 2 machines sont présentes
+               <p><img src="https://komjordan.fr/assets/img/search_host.png" alt="Recherche logs index=*" class="left" /></p>
+               <h2 id="attaques">- Simulation de deux attaques</h2>
+               <h3 id="rapport">1- Tentative de connexion SMB avec des identifiants aléatoires.</h3>
+               Depuis une machine distante (Linux), On tente de se connecter au partage administratif C$ de la machine Windows(ip=192.168.20.130) avec un nom d'utilisateur aléatoire(Axel) avec la commande :
+               <code>smbclient //192.168.20.130/C$ -U Axel</code>  
+               <p><img src="https://komjordan.fr/assets/img/smbclient_login.png" alt="Tentative de connexion smbclient" class="left" /></p>
+               <p>Cette tentative d'accès utilise le protocole SMB (Server Message Block), souvent ciblé dans des attaques par brute force ou reconnaissance réseau.</p>
+               <h4>Conséquence sur le système Windows</h4>
+               La tentative échoue, car le nom d'utilisateur ou le mot de passe est incorrect. Cela déclenche un événement de sécurité Windows de type 4625 - Échec d'ouverture de session.
+               <h4>Observation dans Splunk</h4>
+               Sur le serveur Splunk, cet événement est bien remonté via le Splunk Universal Forwarder installé sur le client Windows. La requête suivante permet d'afficher les échecs de connexion
+               <code>index=* EventCode=4625</code>
+               Et nous pouvons voir depuis l'interface web du serveur Splunk que nous avons cet évènement sous le code event 4625
+               <p><img src="https://komjordan.fr/assets/img/smbclient_search.png" alt="Recherche index=* EventCode=4625" class="left" /></p>
+               <h3 id="rapport">Désactivation de l'antivirus.</h3>
+               Nous désactivons l'antivirus sur la machine Windows
+               <h4>Conséquence sur le système Windows</h4>
+               La désactivation de l'antivirus en entreprise par un employé est vue comme malveillant, car sans antivirus actif
+               <li> le PC peut être contaminé par un ransomware, un cheval de Troie ou un voleur de mots de passe en quelques minutes.</li>
+               <li>e malware peut se déplacer latéralement, atteindre d'autres machines ou serveurs critiques et exfiltrer des données sensibles.</li>
+               <li> interruption d'activité, coûts de remédiation, perte de confiance client et sanctions pour non-conformité (RGPD, ISO 27001, etc.).</li>
+               <h4>Observation dans Splunk</h4>
+               Grâce à la collecte continue des journaux, l'événement est transmis au serveur Splunk et identifié avec le EventCode 15. La requête suivante permet de le retrouver :
+               index=* EventCode=15
+               </p><img src="https://komjordan.fr/assets/img/security_search.png" alt="Recherche index=* EventCode=15" class="left" />
+               <p>
+               <h2 id="rapport-mail">Création d'un rapport avec envoi d'email</h2>
+               <ol>
+                  <li>Effectuez une recherche (ex précedent mais sous forme de tableau : <code>index=* EventCode=15 | table ComputerName, LogName, Message, EventCode | head 20</code> ).</li>
+                  <li>Enregistrez-la comme rapport via : <code>Enregistrer sous > Rapport</code>.</li>
+                  <p><img src="https://komjordan.fr/assets/img/rapport_plan.png" alt="Planification d'un rapport Splunk" class="left" /></p>
+                  <p>
+                  <li>Clic droit sur modifier > Modifier la planification</li>
+                  </p>
+                  <li>Configurez un planification (quotidienne, hebdomadaire...) puis <strong>Ajouter des actions</strong> l'envoi par e-mail :</li>
+                  <ul>
+                     <li>Format : PDF, CSV, etc.</li>
+                     <li>Ajoutez les destinataires.</li>
+                     <p><img src="https://komjordan.fr/assets/img/rapport_plan.png" alt="Planification d'un rapport Splunk avec envoi d'e-mail" class="left" /></p>
+                     <p>
+                     <li>Configurez le serveur SMTP dans : <code>Paramètres > Paramètres serveur > Paramètres de messagerie</code>.</li>
+                     </p>
+                     <p> <img src="https://komjordan.fr/assets/img/splunk_smtp.png" alt="Configuration des paramètres de messagerie" class="left" /></p>
+               </ol>
+               <li>Vous recevez le mail d'execution du rapport avec le pdf comme choisi</li>
+               <p><img src="https://komjordan.fr/assets/img/rapport_mail.png" alt="Rapport reçu par mail" class="left" /></p>
+               <p>Ainsi que le pdf avec les informations de recherche</p>
+               <p><img src="https://komjordan.fr/assets/img/rapport_pdf.png" alt="Planification d'un rapport Splunk" class="left" /></p>
+               </ul>
+               <h2 id="dashboard">Création d'un tableau de bord personnalisé</h2>
+               <ol>
+                  <li>Créez une recherche (ex. : <code>index=wineventlog sourcetype=WinEventLog:Security (EventCode=4624 OR EventCode=4625) | eval TypeConnexion=if(EventCode==4624, "Connexion réussie", "Connexion échouée")
+                     </code><br> ou <br> <code>index=*  | table _time sourcetype EventCode Message | sort -_time | head 20</code>).
+                  </li>
+                  <li>Utilisez "Enregistrer sous > Panneau de tableau de bord".</li>
+                  <li>Ajoutez-la à un tableau de bord existant ou créez-en un nouveau.</li>
+                  <li>Ajoutez plusieurs visualisations (graphiques, jauges, etc.).</li>
+                  <p><img src="https://komjordan.fr/assets/img/dashboard_list.png" alt="Liste des tableaux de bord" class="left" /></p>
+               </ol>
+               Vous pouvez créer un Dasboard qui regroupe tout ceux-ci 
+               Création d'un nouveau dashboard via le menu "Dashboards" 
+               Titre : Axel
+               Ajout des visualisations à partir des rapports et vous choisissez les tableaux créer précédemment 
+               <p><img src="https://komjordan.fr/assets/img/dashboard_all.png" alt="Création de tableau de bord dans Splunk" class="left" /></p>
+               <h2 id="conclusion">Conclusion</h2>
+               <p>Grâce à Splunk, vous pouvez centraliser vos logs, créer des rapports automatisés et piloter la sécurité de votre infrastructure en un clin d'œil.</p>
+               <h2 id="references">References</h2>
+               <p>Au cas où ce blog ne suffirait pas, je vais énumérer des ressources utiles.</p>
+               <ul>
+                  <li><a href="https://docs.splunk.com/Documentation"><u>Documentation Officiel Splunk</u></a></li>
+               </ul>
+               <hr />
+               <div class="post-info">
+                  <p>
+                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10 9 9 9 8 9"></polyline>
+                     </svg>
+                     1 200 Mots
+                  </p>
+                  <p>
+                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                     </svg>
+                     17-01-2025 00:00
+                  </p>
+               </div>
+               <hr />
+               <br>
+               <div class="pagination__buttons">
+                  <a class="pagination-button left" href="https://komjordan.fr/posts/adgpo.html" title="Active Directory & GPO sur Windows Server 2025 - Déploiement et Gestion">
+                  <span class="icon">←</span>
+                  <span class="label">Active Directory & GPO - Windows Server 2025</span>
+                  </a>
+                  <a class="pagination-button right" href="https://komjordan.fr/posts/vsphere.html" title="VMware vSphere - Optimisation et Mise à l'échelle">
+                  <span class="label">VMware vSphere - Optimisation et Mise à l'échelle</span>
+                  <span class="icon">→</span>
+                  </a>
+               </div>
+               <p style="text-align: center; font-weight: bold; color: var(--text-color);">Partager sur :</p>
+               <div class="sharing-buttons">
+                  <a class="resp-sharing-button__link" href="https://facebook.com/sharer/sharer.php?u=https://komjordan.fr/posts/splunk.html" target="_blank" rel="noopener" aria-label="" title="Share on facebook">
+                     <div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--small">
+                        <div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                              <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                           </svg>
+                        </div>
+                     </div>
+                  </a>
+                  <a class="resp-sharing-button__link" href="https://twitter.com/intent/tweet/?url=https://komjordan.fr/posts/splunk.html" target="_blank" rel="noopener" aria-label="" title="Share on twitter">
+                     <div class="resp-sharing-button resp-sharing-button--twitter resp-sharing-button--small">
+                        <div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                              <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+                           </svg>
+                        </div>
+                     </div>
+                  </a>
+                  <a class="resp-sharing-button__link" href="mailto:?subject=Parse%20NTDLL%20and%20PEB&amp;body=https://komjordan.fr/posts/splunk.html" target="_self" rel="noopener" aria-label="" title="Share via email">
+                     <div class="resp-sharing-button resp-sharing-button--email resp-sharing-button--small">
+                        <div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                              <polyline points="22,6 12,13 2,6"></polyline>
+                           </svg>
+                        </div>
+                     </div>
+                  </a>
+                  <a class="resp-sharing-button__link" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fkomjordan.com%2Fposts%2Fsplunk.html" target="_blank" rel="noopener" aria-label="" title="Share on linkedin">
+                     <div class="resp-sharing-button resp-sharing-button--linkedin resp-sharing-button--small">
+                        <div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                              <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                              <rect x="2" y="9" width="4" height="12"></rect>
+                              <circle cx="4" cy="4" r="2"></circle>
+                           </svg>
+                        </div>
+                     </div>
+                  </a>
+                  <a class="resp-sharing-button__link" href="https://reddit.com/submit/?url=https://komjordan.fr/posts/splunk.html" target="_blank" rel="noopener" aria-label="" title="Share on reddit">
+                     <div class="resp-sharing-button resp-sharing-button--reddit resp-sharing-button--small">
+                        <div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                              <path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/>
+                           </svg>
+                        </div>
+                     </div>
+                  </a>
+               </div>
+         </main>
+         </div>
+         <script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
+         <footer>
+            <div class="container">
+               <p>© 2025 Axel</p>
+            </div>
+         </footer>
+      </div>
+      <script src="https://komjordan.fr/main.js"></script>
+      <button id="scrollTopBtn" title="Retour en haut">
+      <span class="arrow-only">↑</span>
+      <span class="text">Retour en haut ↑</span>
+      </button>
+   </body>
+</html>
