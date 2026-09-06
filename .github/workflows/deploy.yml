@@ -23,6 +23,8 @@ jobs:
           # Adapter si le site n'est pas servi depuis la racine du compte FTP,
           # par exemple "server-root: /www/" selon la config LWS
           local-dir: ./
+          # Force une resynchronisation complète (nouveau fichier d'état = aucun historique de comparaison)
+          state-name: .ftp-deploy-sync-state-v2.json
           exclude: |
             **/.git*
             **/.git*/**
