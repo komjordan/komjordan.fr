@@ -18,6 +18,11 @@
   <priority>0.80</priority>
 </url>
 <url>
+  <loc>https://komjordan.fr/posts/wazuh-siem-lab.html</loc>
+  <lastmod>2026-09-06T00:00:00+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
   <loc>https://komjordan.fr/posts/adgpo.html</loc>
   <lastmod>2025-06-02T15:42:30+00:00</lastmod>
   <priority>0.80</priority>

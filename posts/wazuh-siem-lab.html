@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="fr">
+   <head>
+      <!-- Google Tag Manager -->
+      <script>
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id=GTM-M8CZ2MC2'+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-M8CZ2MC2');
+      </script>
+      <!-- End Google Tag Manager -->
+
+      <!-- Google tag (gtag.js) -->
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-N9FG1XDRNK"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-N9FG1XDRNK');
+      </script>
+
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="apple-touch-icon" sizes="180x180" href="https://komjordan.fr/assets/fav.ico">
+      <link rel="icon" type="image/png" sizes="32x32" href="https://komjordan.fr/assets/fav.ico">
+      <link rel="icon" type="image/png" sizes="16x16" href="https://komjordan.fr/assets/fav.ico">
+      <meta name="description" content="Installation d&#x27;un Wazuh manager all-in-one, déploiement d&#x27;agents Windows et Linux, et simulation d&#x27;une attaque brute-force SSH pour valider la détection.">
+      <meta name="author" content="Axel KAMGAING KOM">
+      <link rel="canonical" href="https://komjordan.fr/posts/wazuh-siem-lab.html">
+      <meta property="og:type" content="website">
+      <meta property="og:url" content="https://komjordan.fr/posts/wazuh-siem-lab.html">
+      <meta property="og:title" content="Déployer un SIEM Wazuh sur mon lab : détection cross-platform et brute-force SSH | Axel KAMGAING KOM">
+      <meta property="og:description" content="Installation d&#x27;un Wazuh manager all-in-one, déploiement d&#x27;agents Windows et Linux, et simulation d&#x27;une attaque brute-force SSH pour valider la détection.">
+      <meta property="og:image" content="https://komjordan.fr/assets/img/wazuh-siem-lab.jpg">
+      <meta name="twitter:card" content="summary_large_image">
+      <meta name="twitter:url" content="https://komjordan.fr/posts/wazuh-siem-lab.html">
+      <meta name="twitter:title" content="Déployer un SIEM Wazuh sur mon lab : détection cross-platform et brute-force SSH | Axel KAMGAING KOM">
+      <meta name="twitter:description" content="Installation d&#x27;un Wazuh manager all-in-one, déploiement d&#x27;agents Windows et Linux, et simulation d&#x27;une attaque brute-force SSH pour valider la détection.">
+      <meta name="twitter:image" content="https://komjordan.fr/assets/img/wazuh-siem-lab.jpg">
+      <title>Déployer un SIEM Wazuh sur mon lab : détection cross-platform et brute-force SSH | Axel KAMGAING KOM</title>
+      <link rel="stylesheet" href="https://komjordan.fr/main.css">
+      <script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
+   </head>
+   <body class="dark">
+      <!-- Google Tag Manager (noscript) -->
+      <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M8CZ2MC2"
+      height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+      <!-- End Google Tag Manager (noscript) -->
+      <div class="page">
+         <header>
+            <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+               <a href="https://komjordan.fr" class="logo">&gt; root@komjordan:~# ls<span class="cursor"></span></a>
+               <nav class="menu" id="mainMenu">
+                  <a href="https://komjordan.fr/posts/experiences.html">Experiences</a>
+                  <a href="https://komjordan.fr/posts/post.html">Projets</a>
+                  <div class="theme-switch" id="toggleTheme">
+                     <span class="switch-icon" id="themeIcon">&#127761;</span>
+                     <span class="switch-label" id="themeLabel">Sombre</span>
+                  </div>
+                  <span class="menu-toggle" id="menuBtn">&#9776;</span>
+               </nav>
+            </div>
+         </header>
+         <div class="mobile-menu" id="mobileMenu">
+            <a href="https://komjordan.fr/posts/experiences.html">Experiences</a>
+            <a href="https://komjordan.fr/posts/post.html">Projets</a>
+         </div>
+         <div id="particles-wrapper">
+            <div id="tsparticles">
+               <canvas data-generated="false" style="width: 100%; height: 100%; pointer-events: none;" aria-hidden="true" width="1891" height="885"></canvas>
+            </div>
+         </div>
+         <div class="container">
+            <div class="toc-toggle" onclick="toggleToc()">&#9776; Sommaire</div>
+            <div id="toc" class="toc">
+               <strong>Sommaire</strong>
+               <a href="#introduction">&#128312; Introduction</a>
+               <a href="#etape1">&#128312; Étape 1 : Préparer la VM du Wazuh manager</a>
+               <a href="#etape2">&#128312; Étape 2 : Installer Wazuh en mode all-in-one</a>
+               <a href="#etape3">&#128312; Étape 3 : Premier accès au dashboard</a>
+               <a href="#etape4">&#128312; Étape 4 : Déployer l'agent sur le contrôleur de domaine Windows</a>
+               <a href="#etape5">&#128312; Étape 5 : Déployer l'agent sur une VM Linux</a>
+               <a href="#etape6">&#128312; Étape 6 : Simuler une attaque brute-force SSH</a>
+               <a href="#verification">&#128312; Vérification finale</a>
+               <a href="#conclusion">&#128312; Conclusion</a>
+               <a href="#references">&#128312; References</a>
+               <a href="#credits">&#128312; Crédits</a>
+            </div>
+            <main class="post">
+               <div class="post-info">
+                  <p>
+                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                     </svg>
+                     9 minutes
+                  </p>
+               </div>
+               <h1 class="post-title">
+                  <a href="https://komjordan.fr/posts/wazuh-siem-lab.html">Déployer un SIEM Wazuh sur mon lab : détection cross-platform et brute-force SSH</a>
+               </h1>
+               <div class="post-content">
+                  <blockquote>
+                     <p><strong>Note:</strong> Si vous avez du mal à visualiser les images, téléchargez ou ouvrez dans un nouvel onglet pour avoir une meilleure resolution</p>
+                  </blockquote>
+<h2 id="introduction">Introduction</h2>
+<blockquote><strong><u>Objectif</u></strong> : déployer une plateforme <strong>Wazuh</strong> sur notre lab pour centraliser la collecte de logs, surveiller un contrôleur de domaine Windows et une machine Linux, puis déclencher et observer une alerte de type brute-force.</blockquote>
+<p><strong>Wazuh</strong> est une plateforme open source qui réunit détection d'intrusion, analyse de logs, contrôle d'intégrité de fichiers et conformité en un seul outil. Elle repose sur trois composants : le <strong>Wazuh manager</strong> qui reçoit et analyse les événements, l'<strong>indexer</strong> (basé sur OpenSearch) qui les stocke, et le <strong>dashboard</strong> qui permet de les visualiser. Dans ce lab, nous installons les trois sur une seule VM en mode <em>all-in-one</em>, adapté à un homelab.</p>
+<p>Nous déployons ensuite deux agents : un sur notre contrôleur de domaine <code>SER25-ADDS-GPO</code> (Windows Server), un autre sur une VM Linux dédiée, pour montrer la collecte cross-platform. Nous terminons par une simulation de brute-force SSH afin de voir une alerte remonter dans le dashboard.</p>
+
+<section>
+   <h2 id="etape1">Étape 1 : Préparer la VM du Wazuh manager</h2>
+   <p>Le composant <strong>indexer</strong> (OpenSearch) est gourmand en mémoire : une VM sous-dimensionnée refuse de démarrer ou tourne mal. Nous provisionnons une VM correctement dimensionnée avant de lancer l'installation.</p>
+   <ol>
+      <li>Dans Proxmox, nous créons une VM nommée <code>SER25-WAZUH</code> avec :
+         <ul>
+            <li><strong>Ubuntu Server 24.04 LTS</strong> comme système</li>
+            <li>4 vCPU</li>
+            <li>8 Go de RAM (l'indexer réserve la moitié de la RAM disponible pour sa JVM)</li>
+            <li>50 Go de disque</li>
+         </ul>
+      </li>
+      <li>Nous attribuons l'adresse IP fixe <code>192.168.10.151</code>, DNS préféré <code>192.168.10.150</code> (notre contrôleur de domaine), DNS auxiliaire <code>8.8.8.8</code>.</li>
+      <li>Nous mettons à jour le système avant de commencer :
+         <div class="highlight">
+            <div>
+               <pre><code class="terminal">
+sudo apt update &amp;&amp; sudo apt upgrade -y
+sudo hostnamectl set-hostname SER25-WAZUH
+</code></pre>
+            </div>
+         </div>
+      </li>
+   </ol>
+</section>
+
+<section>
+   <h2 id="etape2">Étape 2 : Installer Wazuh en mode all-in-one</h2>
+   <p>Wazuh fournit un script d'installation assisté qui déploie le manager, l'indexer et le dashboard en une seule commande, avec génération automatique des certificats et des mots de passe. C'est la méthode recommandée pour un lab.</p>
+   <ol>
+      <li>Nous téléchargeons et lançons l'assistant d'installation (version 4.14, la dernière stable au moment de la rédaction) :
+         <div class="highlight">
+            <div>
+               <pre><code class="terminal">
+curl -sO https://packages.wazuh.com/4.14/wazuh-install.sh
+sudo bash ./wazuh-install.sh -a  <span class="comment"> // -a = installation all-in-one (manager + indexer + dashboard)</span>
+</code></pre>
+            </div>
+         </div>
+      </li>
+      <li>L'installation prend entre 5 et 10 minutes. À la fin, le script affiche un résumé avec l'URL du dashboard et le mot de passe généré pour le compte <code>admin</code> :
+         <p><img src="https://komjordan.fr/assets/img/wazuh-install-resume.png" alt="Sortie du script wazuh-install.sh affichant le résumé d'installation avec l'utilisateur admin et le mot de passe généré"></p>
+      </li>
+      <li><strong>Nous copions ce mot de passe immédiatement</strong> : il n'est affiché qu'une seule fois. Il reste également consultable dans le fichier <code>wazuh-install-files.tar</code> généré dans le répertoire courant.</li>
+   </ol>
+   <p>Piège connu : si la VM dispose de moins de 4 Go de RAM, l'indexer (OpenSearch) peut ne pas démarrer ou planter après quelques minutes. Dans ce cas, réduire manuellement le heap JVM dans <code>/etc/wazuh-indexer/jvm.options</code> peut suffire, mais mieux vaut redimensionner la VM en amont.</p>
+</section>
+
+<section>
+   <h2 id="etape3">Étape 3 : Premier accès au dashboard</h2>
+   <ol>
+      <li>Depuis un navigateur, nous ouvrons <code>https://192.168.10.151</code>.</li>
+      <li>Le certificat est auto-signé : c'est attendu pour un lab, nous acceptons l'exception de sécurité.</li>
+      <li>Nous nous connectons avec l'utilisateur <code>admin</code> et le mot de passe récupéré à l'étape précédente.</li>
+      <li>Nous arrivons sur la page d'accueil du dashboard, qui indique <em>« 0 agents »</em> tant qu'aucune machine n'est enregistrée :
+         <p><img src="https://komjordan.fr/assets/img/wazuh-dashboard-accueil.png" alt="Page d'accueil du Wazuh dashboard après première connexion, aucun agent enregistré"></p>
+      </li>
+   </ol>
+</section>
+
+<section>
+   <h2 id="etape4">Étape 4 : Déployer l'agent sur le contrôleur de domaine Windows</h2>
+   <p>Nous installons l'agent Wazuh sur <code>SER25-ADDS-GPO</code>, notre contrôleur de domaine <code>komjordan.fr</code>, pour surveiller les événements de sécurité Windows (connexions, modifications de GPO, création de comptes).</p>
+   <ol>
+      <li>Dans le dashboard, nous allons dans <strong>Agents</strong> &gt; <strong>Deploy new agent</strong>.</li>
+      <li>Nous sélectionnons le système d'exploitation <strong>Windows</strong>, renseignons le nom d'agent <code>SER25-ADDS-GPO</code> et l'adresse du manager <code>192.168.10.151</code>. Le dashboard génère la commande PowerShell correspondante :
+         <p><img src="https://komjordan.fr/assets/img/wazuh-deploy-windows.png" alt="Écran Deploy new agent du dashboard avec OS Windows sélectionné et la commande PowerShell générée"></p>
+      </li>
+      <li>Sur <code>SER25-ADDS-GPO</code>, dans une console <strong>PowerShell en administrateur</strong>, nous exécutons la commande générée (adaptée ici avec nos valeurs) :
+         <div class="highlight">
+            <div>
+               <pre><code class="terminal">
+Invoke-WebRequest -Uri https://packages.wazuh.com/4.x/windows/wazuh-agent-4.14.7-1.msi -OutFile wazuh-agent.msi
+msiexec.exe /i wazuh-agent.msi /q WAZUH_MANAGER="192.168.10.151" WAZUH_AGENT_NAME="SER25-ADDS-GPO"
+</code></pre>
+            </div>
+         </div>
+      </li>
+      <li>Nous démarrons le service de l'agent :
+         <div class="highlight">
+            <div>
+               <pre><code class="terminal">
+NET START WazuhSvc
+</code></pre>
+            </div>
+         </div>
+      </li>
+      <li><strong>Vérification</strong> : dans le dashboard, l'agent <code>SER25-ADDS-GPO</code> apparaît avec le statut <em>Active</em> après quelques secondes :
+         <p><img src="https://komjordan.fr/assets/img/wazuh-agent-windows-actif.png" alt="Liste des agents Wazuh montrant SER25-ADDS-GPO avec le statut Active"></p>
+      </li>
+   </ol>
+   <p>Piège connu : si l'agent reste <em>Never connected</em>, vérifier que le pare-feu Windows autorise le trafic sortant vers le port <code>1514/tcp</code> (communication) et <code>1515/tcp</code> (enregistrement) vers <code>192.168.10.151</code>.</p>
+</section>
+
+<section>
+   <h2 id="etape5">Étape 5 : Déployer l'agent sur une VM Linux</h2>
+   <p>Nous ajoutons une seconde VM (<code>Ubuntu Server</code> ou <code>Debian</code>), que nous appelons <code>LAB-LINUX01</code>, adresse <code>192.168.10.152</code>. C'est elle qui servira de cible pour la simulation de brute-force à l'étape suivante.</p>
+   <ol>
+      <li>Sur <code>LAB-LINUX01</code>, nous ajoutons le dépôt Wazuh et sa clé GPG :
+         <div class="highlight">
+            <div>
+               <pre><code class="terminal">
+sudo apt-get install gnupg apt-transport-https -y
+curl -s https://packages.wazuh.com/key/GPG-KEY-WAZUH | sudo gpg --no-default-keyring --keyring gnupg-ring:/usr/share/keyrings/wazuh.gpg --import
+sudo chmod 644 /usr/share/keyrings/wazuh.gpg
+echo "deb [signed-by=/usr/share/keyrings/wazuh.gpg] https://packages.wazuh.com/4.x/apt/ stable main" | sudo tee -a /etc/apt/sources.list.d/wazuh.list
+sudo apt-get update
+</code></pre>
+            </div>
+         </div>
+      </li>
+      <li>Nous installons l'agent en pointant directement vers notre manager via la variable <code>WAZUH_MANAGER</code> :
+         <div class="highlight">
+            <div>
+               <pre><code class="terminal">
+sudo WAZUH_MANAGER="192.168.10.151" WAZUH_AGENT_NAME="LAB-LINUX01" apt-get install wazuh-agent -y
+</code></pre>
+            </div>
+         </div>
+      </li>
+      <li>Nous activons et démarrons le service :
+         <div class="highlight">
+            <div>
+               <pre><code class="terminal">
+sudo systemctl daemon-reload
+sudo systemctl enable wazuh-agent
+sudo systemctl start wazuh-agent
+</code></pre>
+            </div>
+         </div>
+      </li>
+      <li><strong>Vérification</strong> : le statut du service doit être <code>active (running)</code>, et le journal doit confirmer la connexion :
+         <div class="highlight">
+            <div>
+               <pre><code class="terminal">
+sudo systemctl status wazuh-agent
+sudo tail -f /var/ossec/logs/ossec.log  <span class="comment"> // on y attend la ligne "Connected to the server"</span>
+</code></pre>
+            </div>
+         </div>
+      </li>
+      <li>Dans le dashboard, les deux agents apparaissent maintenant côte à côte, l'un Windows, l'autre Linux :
+         <p><img src="https://komjordan.fr/assets/img/wazuh-agents-liste-complete.png" alt="Liste des agents Wazuh avec SER25-ADDS-GPO (Windows) et LAB-LINUX01 (Linux) tous deux actifs"></p>
+      </li>
+   </ol>
+</section>
+
+<section>
+   <h2 id="etape6">Étape 6 : Simuler une attaque brute-force SSH</h2>
+   <p>Wazuh embarque des règles prêtes à l'emploi pour détecter les tentatives de connexion SSH répétées et échouées (règles <code>5710</code> à <code>5712</code> du décodeur <code>sshd</code>). Nous les déclenchons volontairement pour observer une alerte de bout en bout.</p>
+   <ol>
+      <li>Depuis une autre machine du réseau (par exemple notre poste de travail), nous tentons plusieurs connexions SSH vers <code>LAB-LINUX01</code> avec un mot de passe volontairement incorrect :
+         <div class="highlight">
+            <div>
+               <pre><code class="terminal">
+for i in $(seq 1 6); do
+  ssh -o StrictHostKeyChecking=no -o PreferredAuthentications=password baduser@192.168.10.152
+done
+</code></pre>
+            </div>
+         </div>
+         Nous saisissons un mot de passe quelconque à chaque invite : l'échec est attendu et volontaire.
+      </li>
+      <li>Sur <code>LAB-LINUX01</code>, nous pouvons confirmer que les échecs sont bien journalisés par <code>sshd</code> :
+         <div class="highlight">
+            <div>
+               <pre><code class="terminal">
+sudo tail -n 20 /var/log/auth.log
+</code></pre>
+            </div>
+         </div>
+      </li>
+      <li>Dans le dashboard, nous allons dans <strong>Threat intelligence</strong> &gt; <strong>Security events</strong> et filtrons sur l'agent <code>LAB-LINUX01</code>. Une alerte de niveau élevé apparaît, correspondant à la règle de brute-force SSH :
+         <p><img src="https://komjordan.fr/assets/img/wazuh-alerte-bruteforce.png" alt="Dashboard Wazuh affichant une alerte de brute-force SSH sur l'agent LAB-LINUX01 avec le niveau de règle et le nombre de tentatives"></p>
+      </li>
+      <li>En ouvrant le détail de l'alerte, nous retrouvons l'identifiant de règle, le nombre de tentatives comptabilisées et l'adresse IP source :
+         <p><img src="https://komjordan.fr/assets/img/wazuh-alerte-detail.png" alt="Détail de l'alerte Wazuh montrant l'identifiant de règle sshd, le compteur de tentatives et l'adresse IP source"></p>
+      </li>
+   </ol>
+   <p>Piège connu : si aucune alerte ne remonte, vérifier que le fichier <code>/var/log/auth.log</code> est bien surveillé par l'agent (c'est le cas par défaut sur Ubuntu/Debian) et que l'heure système de <code>LAB-LINUX01</code> et de <code>SER25-WAZUH</code> sont synchronisées : un décalage important peut retarder l'indexation des événements.</p>
+</section>
+
+<h2 id="verification">Vérification finale</h2>
+<p>Nous validons l'ensemble du lab avec cette check-list :</p>
+<ul>
+   <li>Le dashboard affiche 2 agents actifs : <code>SER25-ADDS-GPO</code> et <code>LAB-LINUX01</code>.</li>
+   <li>Les événements de sécurité Windows (connexions, GPO) remontent bien depuis le contrôleur de domaine.</li>
+   <li>La simulation de brute-force SSH a généré une alerte visible et exploitable dans <strong>Security events</strong>.</li>
+</ul>
+
+<h2 id="conclusion">Conclusion</h2>
+<p>Nous avons mis en place une plateforme <strong>Wazuh</strong> complète sur notre lab : un manager en mode all-in-one, un agent Windows sur notre contrôleur de domaine et un agent Linux, avec une démonstration concrète de détection de brute-force SSH. Cette base peut désormais évoluer vers des cas plus avancés : intégration de <strong>FortiGate</strong> ou <strong>pfSense</strong> comme source de logs réseau, activation du module de détection de vulnérabilités, ou création de règles personnalisées pour des scénarios propres à notre environnement.</p>
+
+<h2 id="references">References</h2>
+<ul>
+   <li><a href="https://documentation.wazuh.com/current/quickstart.html">Wazuh — Quickstart (installation assistant)</a></li>
+   <li><a href="https://documentation.wazuh.com/current/installation-guide/wazuh-agent/wazuh-agent-package-windows.html">Wazuh — Déploiement de l'agent sur Windows</a></li>
+   <li><a href="https://documentation.wazuh.com/current/installation-guide/wazuh-agent/wazuh-agent-package-linux.html">Wazuh — Déploiement de l'agent sur Linux</a></li>
+</ul>
+                  <h2 id="credits">Crédits</h2>
+                  <p>None</p>
+                  <hr />
+                  <div class="post-info">
+                     <p>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
+                           <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                           <polyline points="14 2 14 8 20 8"></polyline>
+                           <line x1="16" y1="13" x2="8" y2="13"></line>
+                           <line x1="16" y1="17" x2="8" y2="17"></line>
+                           <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                        1 055 Mots
+                     </p>
+                     <p>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+                           <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                           <line x1="16" y1="2" x2="16" y2="6"></line>
+                           <line x1="8" y1="2" x2="8" y2="6"></line>
+                           <line x1="3" y1="10" x2="21" y2="10"></line>
+                        </svg>
+                        06-09-2026 00:00
+                     </p>
+                  </div>
+                  <hr />
+                  <div class="pagination__buttons">
+
+                  </div>
+                  <p style="text-align: center; font-weight: bold; color: var(--text-color);">Partager sur :</p>
+                  <div class="sharing-buttons">
+                     <a class="resp-sharing-button__link" href="https://facebook.com/sharer/sharer.php?u=https://komjordan.fr/posts/wazuh-siem-lab.html" target="_blank" rel="noopener" aria-label="" title="Share on facebook">
+                        <div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--small">
+                           <div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                 <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                              </svg>
+                           </div>
+                        </div>
+                     </a>
+                     <a class="resp-sharing-button__link" href="https://twitter.com/intent/tweet/?url=https://komjordan.fr/posts/wazuh-siem-lab.html" target="_blank" rel="noopener" aria-label="" title="Share on twitter">
+                        <div class="resp-sharing-button resp-sharing-button--twitter resp-sharing-button--small">
+                           <div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                 <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+                              </svg>
+                           </div>
+                        </div>
+                     </a>
+                     <a class="resp-sharing-button__link" href="mailto:?subject=D%C3%A9ployer%20un%20SIEM%20Wazuh%20sur%20mon%20lab%20%3A%20d%C3%A9tection%20cross-platform%20et%20brute-force%20SSH&amp;body=https://komjordan.fr/posts/wazuh-siem-lab.html" target="_self" rel="noopener" aria-label="" title="Share via email">
+                        <div class="resp-sharing-button resp-sharing-button--email resp-sharing-button--small">
+                           <div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                 <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                 <polyline points="22,6 12,13 2,6"></polyline>
+                              </svg>
+                           </div>
+                        </div>
+                     </a>
+                     <a class="resp-sharing-button__link" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fkomjordan.fr%2Fposts%2Fwazuh-siem-lab.html" target="_blank" rel="noopener" aria-label="" title="Share on linkedin">
+                        <div class="resp-sharing-button resp-sharing-button--linkedin resp-sharing-button--small">
+                           <div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                 <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                                 <rect x="2" y="9" width="4" height="12"></rect>
+                                 <circle cx="4" cy="4" r="2"></circle>
+                              </svg>
+                           </div>
+                        </div>
+                     </a>
+                     <a class="resp-sharing-button__link" href="https://reddit.com/submit/?url=https://komjordan.fr/posts/wazuh-siem-lab.html" target="_blank" rel="noopener" aria-label="" title="Share on reddit">
+                        <div class="resp-sharing-button resp-sharing-button--reddit resp-sharing-button--small">
+                           <div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                                 <path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/>
+                              </svg>
+                           </div>
+                        </div>
+                     </a>
+                  </div>
+               </div>
+            </main>
+         </div>
+         <footer>
+            <div class="container">
+               <p>&copy; 2025 Axel</p>
+            </div>
+         </footer>
+      </div>
+      <script src="https://komjordan.fr/main.js"></script>
+      <button id="scrollTopBtn" title="Retour en haut">
+         <span class="arrow-only">&uarr;</span>
+         <span class="text">Retour en haut &uarr;</span>
+      </button>
+   </body>
+</html>
